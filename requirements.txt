@@ -13,3 +13,4 @@ chromadb==1.0.12
 protobuf<5.0.0
 # PDF Text Extraction
 PyMuPDF==1.25.5
+pysqlite3-binary
