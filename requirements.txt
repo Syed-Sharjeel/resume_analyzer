@@ -1,0 +1,8 @@
+PyMuPDF
+google-generativeai
+chromadb
+keybert
+streamlit
+nltk
+spacy
+scikit-learn
