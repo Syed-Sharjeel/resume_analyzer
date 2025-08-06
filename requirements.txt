@@ -1,8 +1,10 @@
 PyMuPDF
 google-generativeai
-chromadb
 keybert
 streamlit
 nltk
 spacy
 scikit-learn
+chromadb==1.0.12
+pysqlite3-binary>=0.5.2.post2
+protobuf<5.0.0
