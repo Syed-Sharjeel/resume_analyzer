@@ -1,16 +1,11 @@
-keybert
-nltk
-spacy
-streamlit==1.37.1
+chromadb==1.0.15
+en-core-web-sm==3.8.0
+google-generativeai==0.8.5
 google-genai==1.7.0
-google-api-core==2.24.2
-google-ai-generativelanguage==0.6.15
-google-api-python-client==2.166.0
-google-auth==2.38.0
-google-auth-httplib2==0.2.0
-googleapis-common-protos==1.69.2
-chromadb==1.0.12
-protobuf<5.0.0
-# PDF Text Extraction
-PyMuPDF==1.25.5
-pysqlite3-binary
+keybert==0.9.0
+numpy==2.2.6
+plotly==6.2.0
+pymupdf==1.26.3
+scikit-learn==1.7.1
+spacy==3.8.7
+streamlit==1.48.0
