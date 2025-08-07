@@ -13,6 +13,8 @@ from keybert import KeyBERT
 import spacy
 import streamlit as st
 import plotly.graph_objects as go
+
+
 st.markdown('# Resume Analysis')
 genai_client = genai.Client(api_key=st.secrets['GOOGLE_API_KEY'])
 
@@ -27,7 +29,6 @@ resume_file = st.sidebar.file_uploader("Upload Resume (PDF)", type="pdf")
 job_desc_file = st.sidebar.file_uploader("Upload Job Description (PDF)", type="pdf")
 
 def clean_doc(doc):
-    doc = fitz.open(doc)
     pages_doc = [page.get_text().lower() for page in doc]
     cleaned_doc = ' '.join(pages_doc).replace('\n', ' ')
     return cleaned_doc
@@ -40,7 +41,7 @@ class GeminiEmbeddingFunction(EmbeddingFunction):
                     config=types.EmbedContentConfig(task_type='retrieval_document')
                 )
                 return [e.values for e in response.embeddings]
-
+chroma_client = chromadb.Client()
 keybert_model = KeyBERT(model='all-MiniLM-L6-v2')
 
 def convert_set(keywords):
@@ -53,11 +54,18 @@ def extract_sentences(words):
 
 if st.sidebar.button('Start Analysis'):
     if resume_file and job_desc_file:
-        cleaned_resume = clean_doc(resume_file)
-        cleaned_job_desc = clean_doc(job_desc_file)
+        resume = fitz.open(resume_file)
+        job_desc = fitz.open(job_desc_file)
+        cleaned_resume = clean_doc(resume)
+        cleaned_job_desc = clean_doc(job_desc)
 
         embed_fn = GeminiEmbeddingFunction()
-        collection = chroma_client.get_or_create_collection(name='resume_analysis', embedding_function=embed_fn)
+
+        collection = chroma_client.get_or_create_collection(
+            name='resume_analysis',
+            embedding_function=embed_fn
+        )
+
         resume_vector = embed_fn(cleaned_resume)
         job_desc_vector = embed_fn(cleaned_job_desc)
 
@@ -162,6 +170,3 @@ if st.sidebar.button('Start Analysis'):
 
     else:
         st.warning('Upload Resume and Job Description First')
-
-
-
