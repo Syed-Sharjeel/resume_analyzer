@@ -8,6 +8,7 @@ googleapis-common-protos==1.69.2
 # Chroma Vector Store
 chromadb==1.0.12
 pysqlite3-binary>=0.5.2.post2
+en-core-web-sm==3.8.0
 protobuf<5.0.0
 keybert==0.9.0
 numpy==2.2.6
