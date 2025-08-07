@@ -10,8 +10,6 @@ from keybert import KeyBERT
 import spacy
 import streamlit as st
 import plotly.graph_objects as go
-
-Chroma(persist_directory=None)
 st.markdown('# Resume Analysis')
 genai_client = genai.Client(api_key=st.secrets['GOOGLE_API_KEY'])
 
@@ -56,6 +54,7 @@ if st.sidebar.button('Start Analysis'):
         cleaned_job_desc = clean_doc(job_desc_file)
 
         embed_fn = GeminiEmbeddingFunction()
+        collection = chroma_client.get_or_create_collection(name='resume_analysis', embedding_function=embed_fn)
         resume_vector = embed_fn(cleaned_resume)
         job_desc_vector = embed_fn(cleaned_job_desc)
 
@@ -160,4 +159,5 @@ if st.sidebar.button('Start Analysis'):
 
     else:
         st.warning('Upload Resume and Job Description First')
+
 
