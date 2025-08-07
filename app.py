@@ -79,7 +79,8 @@ if st.sidebar.button('Start Analysis'):
         unique_skills = resume_skills - matched_skills
 
         match_score = (len(resume_skills) / (len(resume_skills) + len(missing_skills))) * 100
-
+        from spacy.cli import download
+        download("en_core_web_sm")
         nlp = spacy.load('en_core_web_sm')
         job_desc_sentences = [sent.text for sent in nlp(cleaned_job_desc).sents]
 
@@ -168,5 +169,6 @@ if st.sidebar.button('Start Analysis'):
 
     else:
         st.warning('Upload Resume and Job Description First')
+
 
 
