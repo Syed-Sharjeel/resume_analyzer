@@ -28,6 +28,12 @@ st.sidebar.header('Upload Documents')
 resume_file = st.sidebar.file_uploader("Upload Resume (PDF)", type="pdf")
 job_desc_file = st.sidebar.file_uploader("Upload Job Description (PDF)", type="pdf")
 
+def clean_doc(uploaded_file):
+    file_bytes = uploaded_file.read()
+    doc = fitz.open(stream=file_bytes, filetype="pdf")
+    text = ' '.join([page.get_text().lower() for page in doc])
+    return text.replace('\n', ' ')
+  
 class GeminiEmbeddingFunction(EmbeddingFunction):
             def __call__(self, input):
                 response = genai_client.models.embed_content(
@@ -49,14 +55,8 @@ def extract_sentences(words):
 
 if st.sidebar.button('Start Analysis'):
     if resume_file and job_desc_file:
-        resume = fitz.open(resume_file)
-        job_desc = fitz.open(job_desc_file)
-        cleaned_resume = clean_doc(resume)
-        cleaned_job_desc = clean_doc(job_desc)
-        cleaned_resume = [page.get_text().lower() for page in cleaned_resume]
-        cleaned_resume = ' '.join(cleaned_resume).replace('\n', ' ')
-        cleaned_job_desc = [page.get_text().lower() for page in cleaned_job_desc]
-        cleaned_job_desc = ' '.join(cleaned_job_desc).replace('\n', ' ')
+        cleaned_resume = clean_doc(resume_file)
+        cleaned_job_desc = clean_doc(job_desc_file)
         embed_fn = GeminiEmbeddingFunction()
 
         collection = chroma_client.get_or_create_collection(
@@ -168,4 +168,5 @@ if st.sidebar.button('Start Analysis'):
 
     else:
         st.warning('Upload Resume and Job Description First')
+
 
