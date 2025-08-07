@@ -11,7 +11,7 @@ import spacy
 import streamlit as st
 import plotly.graph_objects as go
 
-
+Chroma(persist_directory=None)
 st.markdown('# Resume Analysis')
 genai_client = genai.Client(api_key=st.secrets['GOOGLE_API_KEY'])
 
@@ -160,3 +160,4 @@ if st.sidebar.button('Start Analysis'):
 
     else:
         st.warning('Upload Resume and Job Description First')
+
